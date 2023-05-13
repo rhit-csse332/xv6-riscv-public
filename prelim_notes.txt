@@ -1,0 +1,8 @@
+proc_pagetable assigns a trampoline and usertrap to a pagetable
+	-trampoline at highest stack address
+	-defined in proc.c l177
+		-will need to either modify heavily or make a mostly-duplicate function for cloning
+	-called in proc.c l136
+		-allocation of unused part of proc table
+	-called in exec.c l49
+		-code at exec.c l124 looks like something we may need to duplicate
