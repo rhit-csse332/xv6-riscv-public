@@ -124,7 +124,7 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
-
+  p->is_clone = 0;
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
     freeproc(p);
@@ -162,6 +162,7 @@ freeproc(struct proc *p)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
   p->sz = 0;
+  p->head_end = 0;
   p->pid = 0;
   p->parent = 0;
   p->name[0] = 0;
@@ -241,7 +242,8 @@ userinit(void)
   // and data into it.
   uvmfirst(p->pagetable, initcode, sizeof(initcode));
   p->sz = PGSIZE;
-
+  p->heap_end = sbrk(0); 
+  printf("proc %d data mem now ends at %ld", p->pid, p->heap_end);
   // prepare for the very first "return" from kernel to user.
   p->trapframe->epc = 0;      // user program counter
   p->trapframe->sp = PGSIZE;  // user stack pointer
@@ -261,7 +263,9 @@ growproc(int n)
 {
   uint64 sz;
   struct proc *p = myproc();
-
+  while(p->is_clone){
+    p = p->parent;
+  }
   sz = p->sz;
   if(n > 0){
     if((sz = uvmalloc(p->pagetable, sz, sz + n, PTE_W)) == 0) {
@@ -270,6 +274,10 @@ growproc(int n)
   } else if(n < 0){
     sz = uvmdealloc(p->pagetable, sz, sz + n);
   }
+
+  p->heap_end = sbrk(0);
+  printf("proc %d data mem now ends at %ld", p->pid, p->heap_end);
+  
   p->sz = sz;
   return 0;
 }
