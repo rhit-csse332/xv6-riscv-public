@@ -9,9 +9,9 @@ int clone(int (*fn)(void*), void* stack, int flags, void* arg){
     uint64 trapframe_addr = cloned_proc->trapframe;
     uint64 trampoline_addr = cloned_proc->trampoline - PGSIZE;
     for(uint64 l2 = 0; l2 < 512; l2++){
-        pte_t *pte_existing = &(existing_proc->pagetable)[PX(l2, va)];
+        pte_t *pte_existing = &(existing_proc->pagetable)[l2];
         if(*pte_existing & PTE_V){ // There is an entry to copy over
-            pte_t *pte_cloned = &(cloned_proc->pagetable)[PX(l2, va)];
+            pte_t *pte_cloned = &(cloned_proc->pagetable)[l2];
             if(!(*pte_cloned & PTE_V)){ // Not the trampoline/trapframe
                 *pte_cloned = *pte_existing;
             }else{
@@ -21,9 +21,9 @@ int clone(int (*fn)(void*), void* stack, int flags, void* arg){
                 // CHEAP AND DIRTY LINEARIZED RECURSION DOWN ALL 3 LEVELS
                 // TODO - Abstract this walk out into a function which calles recursively
                 for(uint64 l1 = 0; l1 < 512; l1++){
-                    *pte_existing = &(existing_pagetable_d1)[PX(l1, va)];
+                    *pte_existing = &(existing_pagetable_d1)[l1];
                     if(*pte_existing & PTE_V){ // There is an entry to copy over
-                        *pte_cloned = &(cloned_pagetable_d1)[PX(l1, va)];
+                        *pte_cloned = &(cloned_pagetable_d1)[l1];
                         if(!(*pte_cloned & PTE_V)){ // Not the trampoline/trapframe
                             pte_cloned = pte_existing;
                         }else{
@@ -35,9 +35,9 @@ int clone(int (*fn)(void*), void* stack, int flags, void* arg){
                             // CHEAP AND DIRTY LINEARIZED RECURSION DOWN ALL 3 LEVELS
                             // TODO - Abstract this walk out into a function which calles recursively
                             for(uint64 l0 = 0; l0 < 512; l0++){
-                                *pte_existing = &(existing_pagetable_d0)[PX(l0, va)];
+                                *pte_existing = &(existing_pagetable_d0)[l0];
                                 if(*pte_existing & PTE_V){ // There is an entry to copy over
-                                    *pte_cloned = &(cloned_pagetable_d0)[PX(l0, va)];
+                                    *pte_cloned = &(cloned_pagetable_d0)[l0];
                                     if(!(*pte_cloned & PTE_V)){ // Not the trampoline/trapframe
                                         pte_cloned = pte_existing;
                                     }
