@@ -5,8 +5,6 @@
  * Kernel threads library
  * 
  * Bee Cerasoli, Ben Graham, Corwin Jones
- * 
- * Function headers based on POSIX clone() definitions
 */
 
 // Based on the clone() man page
