@@ -1,9 +1,9 @@
 // NAME: Ben Graham
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <time.h>
+#include <stdio.h> // OH NO
+#include <stdlib.h> // OH NO
+#include <sys/time.h> // OH NO
+#include <time.h> // OH NO
 #include "pthread.h"
 
 int verbose = 0;   // Whether to print array before and after sorting
