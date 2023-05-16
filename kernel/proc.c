@@ -149,6 +149,8 @@ found:
   return p;
 }
 
+// TODO - Free clones
+
 // free a proc structure and the data hanging from it,
 // including user pages.
 // p->lock must be held.
@@ -254,6 +256,8 @@ userinit(void)
   release(&p->lock);
 }
 
+
+// TODO - Propagate to clones
 // Grow or shrink user memory by n bytes.
 // Return 0 on success, -1 on failure.
 int
@@ -325,6 +329,8 @@ fork(void)
   return pid;
 }
 
+
+// NOT SUPPORTED FOR CLONE
 // Pass p's abandoned children to init.
 // Caller must hold wait_lock.
 void
