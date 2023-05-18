@@ -16,6 +16,9 @@
 extern struct proc* allocproc(void);
 
 int clone(int (*fn)(void*), void* stack, int flags, void* arg){
+    
+    int i, pid;
+
     struct proc *existing_proc = myproc();  // grab current proc
     struct proc *cloned_proc = allocproc(); // alloc fresh proc
     cloned_proc->pagetable = proc_pagetable(cloned_proc); // generate and assign empty PT with trampoline
@@ -69,5 +72,35 @@ int clone(int (*fn)(void*), void* stack, int flags, void* arg){
 
     // TODO - Execution + init proc stuff to run
     
+
+    cloned_proc->sz = existing_proc->sz;
+
+    // copy saved user registers.
+    *(cloned_proc->trapframe) = *(existing_proc->trapframe);
+
+    // Cause fork to return 0 in the child.
+    cloned_proc->trapframe->a0 = 0;
+
+    // increment reference counts on open file descriptors.
+    for(i = 0; i < NOFILE; i++)
+        if(existing_proc->ofile[i])
+            cloned_proc->ofile[i] = filedup(existing_proc->ofile[i]);
+    cloned_proc->cwd = idup(existing_proc->cwd);
+
+    safestrcpy(cloned_proc->name, existing_proc->name, sizeof(existing_proc->name));
+
+    pid = cloned_proc->pid;
+
+    release(&cloned_proc->lock);
+
+    acquire(&wait_lock);
+    cloned_proc->parent = existing_proc;
+    release(&wait_lock);
+
+    acquire(&cloned_proc->lock);
+    cloned_proc->state = RUNNABLE;
+    release(&cloned_proc->lock);
+
+    return pid;
 
 }
