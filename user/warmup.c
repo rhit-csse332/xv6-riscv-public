@@ -70,13 +70,13 @@ void test_ensure_correct_order(void)
 
 /*
  * This function takes two pointers to integers and tests their equality:
- * 
+ *
  * The function returns 2 if the two values point to the same location in
  * memory.
- * 
+ *
  * The function returns 1 if the two values point to different locations in
  * memory, but those locations contain equal integers.
- * 
+ *
  * The function returns 0 if neither 1 or 2 is true.
  */
 int special_equals(int *val1, int *val2)
@@ -89,7 +89,7 @@ void test_special_equals(void)
 {
   int a = 7, b = 11, c = 11;
 
-  rhassert_int_equals(special_equals(&a, &a), 2); 
+  rhassert_int_equals(special_equals(&a, &a), 2);
   rhassert_int_equals(special_equals(&b, &c), 1);
   rhassert_int_equals(special_equals(&a, &b), 0);
   rhassert_int_equals(special_equals(&a, &c), 0);
@@ -100,23 +100,23 @@ void test_special_equals(void)
  * them has a Q.  The address of the string with a Q should be set in the output
  * field.  If neither string contains a Q, the output address should be set to
  * 0.
- * 
+ *
  * Remember that in C, all strings are terminated with a '\0' character
  * so that's what you should check to see if you're at the end of the string.
- * 
+ *
  * Also remember you can treat pointers like arrays so if you want to get the
- * 5th character of a string, you can do either of these: 
+ * 5th character of a string, you can do either of these:
  *  char* letters = "abcde";
  *  char second_letter = letters[1]; //fine
  *  char second_letter_with_pointer_math = *(letters + 1); //also fine
  *  printf("letters %c %c\n", second_letter, second_letter_with_pointer_math);
- * 
+ *
  * You can assume:
  * 1.  The strings are equal length
  * 2.  At most one string will contain a Q
- * 
+ *
  * You can use C string search functions if you wish, but I think it's easier to
- * just write a little for loop.  
+ * just write a little for loop.
  */
 void string_with_q(char *s1, char *s2, char **output)
 {

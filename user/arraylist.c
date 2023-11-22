@@ -41,11 +41,11 @@ struct arraylist {
 
 /**
  * @brief Allocate and initialize a new array list.
- * 
+ *
  * Allocate room for a new array list and set its size and capacity to the
  * default values. Be aware that the array list originally has a capacity of
  * DEF_ARRAY_LIST_CAPACITY, and thus must allocate room for the internal list as
- * well. 
+ * well.
  *
  * @return a new array list.
  */
@@ -57,9 +57,9 @@ struct arraylist *al_new(void)
 
 /**
  * @brief Free an allocated list.
- * 
+ *
  * Free an allocated array by freeing the internal list first and then freeing
- * the structure itself. 
+ * the structure itself.
  *
  * @warning The list is invalid after returning from this function.
  */
@@ -70,8 +70,8 @@ void al_free(struct arraylist *al)
 
 /**
  * @brief Get the element at position pos.
- * 
- * Return the element at the given position pos. 
+ *
+ * Return the element at the given position pos.
  *
  * @param al         The array list.
  * @param pos        The position where to get.
@@ -86,10 +86,10 @@ int al_get_at(struct arraylist *al, int pos)
 
 /**
  * @brief Resize an array list.
- * 
- * Resize the array list by making sure the internal list grows double in size. 
+ *
+ * Resize the array list by making sure the internal list grows double in size.
  * Note that all the elements in the list must be preserved, i.e., the original
- * content of the list must still be present in there after the resize. 
+ * content of the list must still be present in there after the resize.
  *
  * @param al         The array list.
  *
@@ -103,9 +103,9 @@ void al_resize(struct arraylist *al)
 
 /**
  * @brief Append a new element to the list.
- * 
+ *
  * Add a new element at the end of the list. If the list is out of space, this
- * will cause a resize and add the element. 
+ * will cause a resize and add the element.
  *
  * @param al            The array list.
  * @param val           The value to append.
