@@ -15,9 +15,9 @@ def test_add_with_pointers():
 def test_ensure_correct_order():
     r.run_qemu(shell_script(['warmup 2']))
     # In here, given the way the regex matching is happening (line by line), we
-    # must provide a regex for each line that we'd like to match. If a regex 
+    # must provide a regex for each line that we'd like to match. If a regex
     # matches more than one line, then it won't work because they will remove it
-    # from the list. 
+    # from the list.
     r.match("^test_ensure_correct_order\\(\\d+\\): OK\.",
             no=[".*Assertion FAILED.*"])
 
